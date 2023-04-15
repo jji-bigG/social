@@ -106,9 +106,9 @@ export default NoSSRHOC(function SignUp() {
           </Button>
           <Grid container justifyContent="flex-end">
             <Grid item>
-              <NextLink href="/signinSide">
-                <Link variant="body2">Already have an account? Sign in</Link>
-              </NextLink>
+              <Link href="/signin" component={NextLink} variant="body2">
+                Already have an account? Sign in
+              </Link>
             </Grid>
           </Grid>
         </Box>

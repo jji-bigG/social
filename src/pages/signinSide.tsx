@@ -103,16 +103,14 @@ export default NoSSRHOC(function SignInSide() {
             </Button>
             <Grid container>
               <Grid item xs>
-                <NextLink href="/forgotpwd">
-                  <Link variant="body2">Forgot password?</Link>
-                </NextLink>
+                <Link component={NextLink} href="/forgotpwd" variant="body2">
+                  Forgot password?
+                </Link>
               </Grid>
               <Grid item>
-                <NextLink href="/signup">
-                  <Link variant="body2">
-                    {"Don't have an account? Sign Up"}
-                  </Link>
-                </NextLink>
+                <Link href="/signup" component={NextLink} variant="body2">
+                  {"Don't have an account? Sign Up"}
+                </Link>
               </Grid>
             </Grid>
           </Box>

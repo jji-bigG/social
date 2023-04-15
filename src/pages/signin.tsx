@@ -14,18 +14,15 @@ import Container from "@mui/material/Container";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
 import NextLink from "next/link";
 import { NoSSRHOC } from "~/wrappers/NoSSR";
+import { Controller, useForm } from "react-hook-form";
 
-const theme = createTheme();
-
-export default NoSSRHOC(function SignIn() {
-  const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
-    event.preventDefault();
-    const data = new FormData(event.currentTarget);
-    console.log({
-      email: data.get("email"),
-      password: data.get("password"),
-    });
-  };
+function SignIn() {
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+    control,
+  } = useForm();
 
   return (
     <Container component="main" maxWidth="xs">
@@ -44,31 +41,61 @@ export default NoSSRHOC(function SignIn() {
         <Typography component="h1" variant="h5">
           Sign in
         </Typography>
-        <Box component="form" onSubmit={handleSubmit} noValidate sx={{ mt: 1 }}>
+        <Box
+          component="form"
+          onSubmit={handleSubmit((data) => {
+            console.log(data);
+          })}
+          noValidate
+          sx={{ mt: 1 }}
+        >
           <TextField
             margin="normal"
+            label="Email"
             required
             fullWidth
-            id="email"
-            label="Email Address"
-            name="email"
-            autoComplete="email"
+            {...register("email", {
+              required: "Required",
+            })}
             autoFocus
           />
           <TextField
             margin="normal"
             required
             fullWidth
-            name="password"
+            {...register("password", {
+              required: "Required",
+            })}
             label="Password"
             type="password"
             id="password"
             autoComplete="current-password"
           />
+
           <FormControlLabel
-            control={<Checkbox value="remember" color="primary" />}
+            control={
+              <Controller
+                control={control}
+                name="remember"
+                defaultValue={true}
+                render={({
+                  field: { onChange, onBlur, value, name, ref },
+                  fieldState: { invalid, isDirty, isTouched, error },
+                }) => {
+                  return (
+                    <Checkbox
+                      onBlur={onBlur}
+                      onChange={onChange}
+                      checked={value}
+                      inputRef={ref}
+                    />
+                  );
+                }}
+              />
+            }
             label="Remember me"
           />
+
           <Button
             type="submit"
             fullWidth
@@ -79,18 +106,20 @@ export default NoSSRHOC(function SignIn() {
           </Button>
           <Grid container>
             <Grid item xs>
-              <NextLink href="/forgotpwd">
-                <Link variant="body2">Forgot password?</Link>
-              </NextLink>
+              <Link href="/forgotpwd" component={NextLink} variant="body2">
+                Forgot password?
+              </Link>
             </Grid>
             <Grid item>
-              <NextLink href="/signup">
-                <Link variant="body2">{"Don't have an account? Sign Up"}</Link>
-              </NextLink>
+              <Link href="/signup" component={NextLink} variant="body2">
+                {"Don't have an account? Sign Up"}
+              </Link>
             </Grid>
           </Grid>
         </Box>
       </Box>
     </Container>
   );
-});
+}
+
+export default NoSSRHOC(SignIn);
