@@ -6,6 +6,7 @@ import { api } from "~/utils/api";
 
 import "~/styles/globals.css";
 import PrimarySearchAppBar from "~/components/AppBar/AppBar";
+import { CssBaseline } from "@mui/material";
 
 const MyApp: AppType<{ session: Session | null }> = ({
   Component,
@@ -13,6 +14,7 @@ const MyApp: AppType<{ session: Session | null }> = ({
 }) => {
   return (
     <SessionProvider session={session}>
+      <CssBaseline />
       <PrimarySearchAppBar />
       <Component {...pageProps} />
     </SessionProvider>

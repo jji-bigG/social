@@ -50,7 +50,7 @@ interface Props {
 const AppBarDrawer = ({ menuOpen, setOpen }: Props) => {
   return (
     <Drawer anchor="left" open={menuOpen} onClose={() => setOpen(false)}>
-      <Toolbar
+      {/* <Toolbar
         sx={{
           display: "flex",
           alignItems: "center",
@@ -61,7 +61,7 @@ const AppBarDrawer = ({ menuOpen, setOpen }: Props) => {
         <IconButton onClick={() => setOpen(false)}>
           <ChevronLeftIcon />
         </IconButton>
-      </Toolbar>
+      </Toolbar> */}
       <AppBarList />
     </Drawer>
   );

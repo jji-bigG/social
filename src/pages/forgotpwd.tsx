@@ -3,10 +3,6 @@ import {
   Box,
   Avatar,
   Typography,
-  TextField,
-  FormControlLabel,
-  Checkbox,
-  Button,
   Grid,
   Container,
   Link,
@@ -17,6 +13,7 @@ import React from "react";
 
 import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
 import { NoSSRHOC } from "~/wrappers/NoSSR";
+import ResetForm from "~/components/Auth/ResetForm";
 
 export default NoSSRHOC(function ForgotPassword() {
   const handleSubmit = () => {};
@@ -39,6 +36,8 @@ export default NoSSRHOC(function ForgotPassword() {
           Password Reset
         </Typography>
         <Box component="form" onSubmit={handleSubmit} noValidate sx={{ mt: 1 }}>
+          <ResetForm />
+
           <Grid container>
             <Grid item xs>
               <NextLink href="/signin">
