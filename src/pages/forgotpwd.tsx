@@ -16,8 +16,9 @@ import NextLink from "next/link";
 import React from "react";
 
 import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
+import { NoSSRHOC } from "~/wrappers/NoSSR";
 
-export default function ForgotPassword() {
+export default NoSSRHOC(function ForgotPassword() {
   const handleSubmit = () => {};
 
   return (
@@ -54,4 +55,4 @@ export default function ForgotPassword() {
       </Box>
     </Container>
   );
-}
+});

@@ -13,10 +13,11 @@ import Typography from "@mui/material/Typography";
 import Container from "@mui/material/Container";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
 import NextLink from "next/link";
+import { NoSSRHOC } from "~/wrappers/NoSSR";
 
 const theme = createTheme();
 
-export default function SignIn() {
+export default NoSSRHOC(function SignIn() {
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     const data = new FormData(event.currentTarget);
@@ -92,4 +93,4 @@ export default function SignIn() {
       </Box>
     </Container>
   );
-}
+});

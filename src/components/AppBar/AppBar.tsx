@@ -119,6 +119,7 @@ export default function PrimarySearchAppBar() {
   return (
     <Box sx={{ flexGrow: 1 }}>
       <AppBarDrawer menuOpen={menuOpen} setOpen={setMenuOpen} />
+
       <AppBar position="static">
         <Toolbar>
           <IconButton
@@ -186,6 +187,7 @@ export default function PrimarySearchAppBar() {
           </Box>
         </Toolbar>
       </AppBar>
+
       {renderMobileMenu}
       {renderMenu}
     </Box>

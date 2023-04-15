@@ -14,10 +14,11 @@ import Typography from "@mui/material/Typography";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
 
 import NextLink from "next/link";
+import { NoSSRHOC } from "~/wrappers/NoSSR";
 
 const theme = createTheme();
 
-export default function SignInSide() {
+export default NoSSRHOC(function SignInSide() {
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     const data = new FormData(event.currentTarget);
@@ -119,4 +120,4 @@ export default function SignInSide() {
       </Grid>
     </Grid>
   );
-}
+});

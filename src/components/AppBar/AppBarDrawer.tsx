@@ -49,7 +49,7 @@ interface Props {
 
 const AppBarDrawer = ({ menuOpen, setOpen }: Props) => {
   return (
-    <Drawer anchor="left" open={menuOpen} variant="permanent">
+    <Drawer anchor="left" open={menuOpen} onClose={() => setOpen(false)}>
       <Toolbar
         sx={{
           display: "flex",

@@ -14,10 +14,11 @@ import Container from "@mui/material/Container";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
 
 import NextLink from "next/link";
+import { NoSSRHOC } from "~/wrappers/NoSSR";
 
 const theme = createTheme();
 
-export default function SignUp() {
+export default NoSSRHOC(function SignUp() {
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     const data = new FormData(event.currentTarget);
@@ -114,4 +115,4 @@ export default function SignUp() {
       </Box>
     </Container>
   );
-}
+});
