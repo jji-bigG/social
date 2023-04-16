@@ -15,18 +15,24 @@ import { createTheme, ThemeProvider } from "@mui/material/styles";
 
 import NextLink from "next/link";
 import { NoSSRHOC } from "~/wrappers/NoSSR";
+import { z } from "zod";
+import { useForm, SubmitHandler } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
+import registerSchema from "~/schemas/user/register.schema";
 
 const theme = createTheme();
 
+type FormSchemaType = z.infer<typeof registerSchema>;
+
 export default NoSSRHOC(function SignUp() {
-  const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
-    event.preventDefault();
-    const data = new FormData(event.currentTarget);
-    console.log({
-      email: data.get("email"),
-      password: data.get("password"),
-    });
-  };
+  const {
+    register,
+    watch,
+    handleSubmit,
+    formState: { errors },
+  } = useForm<FormSchemaType>({ resolver: zodResolver(registerSchema) });
+
+  const onSubmit: SubmitHandler<FormSchemaType> = (data) => {};
 
   return (
     <Container component="main" maxWidth="xs">
@@ -45,12 +51,21 @@ export default NoSSRHOC(function SignUp() {
         <Typography component="h1" variant="h5">
           Sign up
         </Typography>
-        <Box component="form" noValidate onSubmit={handleSubmit} sx={{ mt: 3 }}>
+        <Box
+          component="form"
+          noValidate
+          onSubmit={handleSubmit(onSubmit)}
+          sx={{ mt: 3 }}
+        >
           <Grid container spacing={2}>
             <Grid item xs={12} sm={6}>
               <TextField
                 autoComplete="given-name"
-                name="firstName"
+                {...register("firstName")}
+                error={!!errors.firstName}
+                helperText={
+                  errors.firstName?.message ? errors.firstName.message : ""
+                }
                 required
                 fullWidth
                 id="firstName"
@@ -64,7 +79,11 @@ export default NoSSRHOC(function SignUp() {
                 fullWidth
                 id="lastName"
                 label="Last Name"
-                name="lastName"
+                {...register("lastName")}
+                error={!!errors.lastName}
+                helperText={
+                  errors.lastName?.message ? errors.lastName.message : ""
+                }
                 autoComplete="family-name"
               />
             </Grid>
@@ -74,7 +93,9 @@ export default NoSSRHOC(function SignUp() {
                 fullWidth
                 id="email"
                 label="Email Address"
-                name="email"
+                {...register("email")}
+                error={!!errors.email}
+                helperText={errors.email?.message ? errors.email.message : ""}
                 autoComplete="email"
               />
             </Grid>
@@ -82,19 +103,38 @@ export default NoSSRHOC(function SignUp() {
               <TextField
                 required
                 fullWidth
-                name="password"
+                {...register("password")}
+                error={!!errors.password}
+                helperText={
+                  errors.password?.message ? errors.password.message : ""
+                }
                 label="Password"
                 type="password"
                 id="password"
-                autoComplete="new-password"
               />
             </Grid>
             <Grid item xs={12}>
+              <TextField
+                required
+                fullWidth
+                {...register("confirmPassword")}
+                error={!!errors.confirmPassword}
+                helperText={
+                  errors.confirmPassword?.message
+                    ? errors.confirmPassword.message
+                    : ""
+                }
+                label="Confirm Password"
+                type="password"
+                id="password"
+              />
+            </Grid>
+            {/* <Grid item xs={12}>
               <FormControlLabel
                 control={<Checkbox value="allowExtraEmails" color="primary" />}
                 label="I want to receive inspiration, marketing promotions and updates via email."
               />
-            </Grid>
+            </Grid> */}
           </Grid>
           <Button
             type="submit"

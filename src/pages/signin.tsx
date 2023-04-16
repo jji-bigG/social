@@ -14,7 +14,21 @@ import Container from "@mui/material/Container";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
 import NextLink from "next/link";
 import { NoSSRHOC } from "~/wrappers/NoSSR";
-import { Controller, useForm } from "react-hook-form";
+import { Controller, SubmitHandler, useForm } from "react-hook-form";
+import { z } from "zod";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { signIn } from "next-auth/react";
+
+const formSchema = z.object({
+  email: z.string().email("Invalid Email").min(1, "Email is Required"),
+  password: z
+    .string()
+    .min(1, "Password is required")
+    .min(8, "Password must have more than 8 characters"),
+  remember: z.boolean().default(true),
+});
+
+type FormSchemaType = z.infer<typeof formSchema>;
 
 function SignIn() {
   const {
@@ -22,7 +36,22 @@ function SignIn() {
     handleSubmit,
     formState: { errors },
     control,
-  } = useForm();
+  } = useForm<FormSchemaType>({
+    resolver: zodResolver(formSchema),
+  });
+
+  const onSubmit: SubmitHandler<FormSchemaType> = (data) => {
+    const { email, password, remember } = data;
+
+    signIn("credentials", {
+      email,
+      password,
+    });
+
+    if (remember) {
+      localStorage.setItem("credentials", JSON.stringify(data));
+    }
+  };
 
   return (
     <Container component="main" maxWidth="xs">
@@ -43,9 +72,7 @@ function SignIn() {
         </Typography>
         <Box
           component="form"
-          onSubmit={handleSubmit((data) => {
-            console.log(data);
-          })}
+          onSubmit={handleSubmit(onSubmit)}
           noValidate
           sx={{ mt: 1 }}
         >
@@ -57,6 +84,8 @@ function SignIn() {
             {...register("email", {
               required: "Required",
             })}
+            error={!!errors.email}
+            helperText={errors.email?.message ? errors.email.message : ""}
             autoFocus
           />
           <TextField
@@ -68,16 +97,16 @@ function SignIn() {
             })}
             label="Password"
             type="password"
-            id="password"
-            autoComplete="current-password"
+            error={!!errors.password}
+            helperText={errors.password?.message ? errors.password.message : ""}
           />
 
           <FormControlLabel
             control={
               <Controller
                 control={control}
-                name="remember"
                 defaultValue={true}
+                name="remember"
                 render={({
                   field: { onChange, onBlur, value, name, ref },
                   fieldState: { invalid, isDirty, isTouched, error },
