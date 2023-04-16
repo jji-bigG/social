@@ -1,0 +1,7 @@
+model Profile {
+    id String @id @default(cuid())
+
+    // user User @relation()
+
+    // updatedAt @updatedAt
+}
