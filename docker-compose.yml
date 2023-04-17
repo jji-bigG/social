@@ -12,4 +12,15 @@ services:
       - "3000:3000"
     image: t3-app
     environment:
-      - DATABASE_URL=database_url_goes_here
+      - DATABASE_URL=postgres://postgres:1234@db:5432/
+      - NEXT_PUBLIC_CLIENTVAR=clientvar
+  db:
+    image: postgres
+    ports:
+      - "5432:5432"
+    environment:
+      - POSTGRES_PASSWORD=1234
+      - POSTGRES_USER=postgres
+      - POSTGRES_DB=postgres
+    volumes:
+      - /postgres:/var/lib/postgresql/data
